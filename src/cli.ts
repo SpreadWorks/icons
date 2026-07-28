@@ -6,6 +6,7 @@ import { fontAwesomeOutputDirectory, loadFontAwesomeIcon } from "./providers/fon
 import { loadLucideIcon } from "./providers/lucide.js";
 import { loadSvgFileIcon } from "./providers/svg-file.js";
 import { ensureRuntimeFiles } from "./templates/runtime.js";
+import { writeFontAwesomeBarrel } from "./transforms/write-fontawesome-barrel.js";
 import { writeIconModule } from "./transforms/write-icon-module.js";
 
 type Arguments = Record<string, string | undefined>;
@@ -56,6 +57,7 @@ async function main(): Promise<void> {
   const directory = provider === "fontawesome" ? `fontawesome/${fontAwesomeOutputDirectory(fontAwesomeSource!)}` : provider === "svg-file" ? "custom" : "lucide";
   const filename = provider === "fontawesome" ? icon.symbol! : name;
   const outputPath = await writeIconModule({ icon, targetDirectory, outputRelativePath: `${directory}/${filename}.ts` });
+  if (provider === "fontawesome") await writeFontAwesomeBarrel({ targetDirectory, outputDirectory: directory, symbol: filename });
   process.stdout.write(`Generated ${outputPath}\n`);
 }
 

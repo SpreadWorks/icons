@@ -109,6 +109,13 @@ export function NextLink() {
 }
 ```
 
+Each generated Font Awesome package also has an `index.ts` barrel, so package
+imports work after the relevant icons have been generated.
+
+```tsx
+import { faFile, faFileImage } from "@fortawesome/pro-light-svg-icons";
+```
+
 `FontAwesomeIcon` supports the compatibility props used by this project:
 `icon`, `size`, `color`, `style`, and `flip`. The generated runtime files are
 created only when absent, so later icon generation does not overwrite the

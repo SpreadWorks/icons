@@ -47,7 +47,7 @@ await mkdir(proPackageDirectory, { recursive: true });
 await writeFile(join(proPackageDirectory, "package.json"), JSON.stringify({ name: "@fortawesome/pro-light-svg-icons", type: "module", exports: "./index.js" }));
 await writeFile(
   join(proPackageDirectory, "index.js"),
-  'export const faChevronRight = { icon: [320, 512, [], "f054", "M0 0h320v512H0z"] };',
+  'export const faChevronRight = { icon: [320, 512, [], "f054", "M0 0h320v512H0z"] };\nexport const faFile = { icon: [384, 512, [], "f15b", "M0 0h384v512H0z"] };',
 );
 
 const command = join(consumerDirectory, "node_modules/.bin/spreadworks-icons");
@@ -55,6 +55,7 @@ for (const args of [
   ["add", "--provider", "fontawesome", "--source", "free-solid", "--icon", "chevron-right", "--target", "icons"],
   ["add", "--provider", "fontawesome", "--source", "free-solid", "--icon", "xmark", "--target", "icons"],
   ["add", "--provider", "fontawesome", "--source", "pro-light", "--icon", "chevron-right", "--target", "icons"],
+  ["add", "--provider", "fontawesome", "--source", "pro-light", "--icon", "file", "--target", "icons"],
   ["add", "--provider", "svg-file", "--file", "brand.svg", "--name", "brand-logo", "--target", "icons"],
 ]) {
   execFileSync(command, args, { cwd: consumerDirectory, stdio: "inherit" });
@@ -68,7 +69,10 @@ for (const file of [
   "fontawesome/FontAwesomeIcon.tsx",
   "fontawesome/fontawesome-svg-core/styles.css",
   "fontawesome/free-solid-svg-icons/faChevronRight.ts",
+  "fontawesome/free-solid-svg-icons/index.ts",
   "fontawesome/pro-light-svg-icons/faChevronRight.ts",
+  "fontawesome/pro-light-svg-icons/faFile.ts",
+  "fontawesome/pro-light-svg-icons/index.ts",
   "custom/brand-logo.ts",
 ]) {
   await readFile(join(iconDirectory, file), "utf8");
@@ -80,14 +84,20 @@ if (/from\s+["']@spreadworks\/icons/.test(generatedIcon)) {
 if (!generatedIcon.includes("export const faChevronRight")) {
   throw new Error("Generated Font Awesome icon must preserve its export name.");
 }
+const freeBarrel = await readFile(join(iconDirectory, "fontawesome/free-solid-svg-icons/index.ts"), "utf8");
+if (freeBarrel !== 'export { faChevronRight } from "./faChevronRight.js";\nexport { faXmark } from "./faXmark.js";\n') {
+  throw new Error("Generated Font Awesome Free barrel must export each generated icon once.");
+}
 
 await writeFile(
   join(consumerDirectory, "src/entry.tsx"),
   [
     'import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";',
-    'import { faChevronRight } from "@fortawesome/pro-light-svg-icons/faChevronRight";',
+    'import { faChevronRight } from "@fortawesome/free-solid-svg-icons";',
+    'import { faFile } from "@fortawesome/pro-light-svg-icons";',
     'import "@fortawesome/fontawesome-svg-core/styles.css";',
     'export const legacyIcon = <FontAwesomeIcon icon={faChevronRight} size="sm" flip="horizontal" />;',
+    'export const generatedProIcon = faFile;',
   ].join("\n"),
 );
 execFileSync(join(consumerDirectory, "node_modules/.bin/tsc"), ["-p", "tsconfig.json"], { cwd: consumerDirectory, stdio: "inherit" });
@@ -102,7 +112,7 @@ const bundle = await build({
   write: false,
 });
 const bundledCode = bundle.outputFiles.find((file) => file.path.endsWith(".js"))?.text ?? "";
-if (!bundledCode.includes("chevron-right") || bundledCode.includes("faXmark") || bundledCode.includes("@spreadworks/icons")) {
+if (!bundledCode.includes("chevron-right") || !bundledCode.includes('"file"') || bundledCode.includes("faXmark") || bundledCode.includes("@spreadworks/icons")) {
   throw new Error("A consumer bundle must retain only its imported icon.");
 }
 
