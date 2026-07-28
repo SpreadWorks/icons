@@ -1,5 +1,9 @@
 # @spreadworks/icons
 
+<!-- {{data("cli.docs.langSwitcher", {labels: "absolute"})}} -->
+[日本語](docs/ja/README.md) | **English**
+<!-- {{/data}} -->
+
 `@spreadworks/icons` is a development CLI that generates React icon source
 files into a consuming project. Applications import the generated files
 directly, so Font Awesome, Lucide, and this CLI are not runtime dependencies.
@@ -117,3 +121,18 @@ consumer's edits.
 Generated icon data remains subject to its upstream license. Font Awesome Free
 files retain their required CC BY 4.0 attribution, and Font Awesome Pro data
 must remain within the scope permitted by its license.
+
+<!-- {{data("cli.docs.chapters", {header: "## Documentation\n", labels: "Chapter|Summary", ignoreError: true})}} -->
+## Documentation
+
+| Chapter | Summary |
+| --- | --- |
+| [Tool Overview and Architecture](docs/overview.md) | @spreadworks/icons is a CLI that generates owned React SVG icon source files directly into a consuming project, so ap… |
+| [Technology Stack and Operations](docs/stack_and_ops.md) | This project is a TypeScript-based ESM CLI package that generates owned, tree-shakeable React SVG icon source files f… |
+| [Project Structure](docs/project_structure.md) | This chapter covers four major working directories: src holds the TypeScript CLI and generation logic, dist holds the… |
+| [CLI Command Reference](docs/cli_commands.md) | This CLI exposes 1 top-level command, add, and it does not define any nested subcommands. |
+| [Configuration and Customization](docs/configuration.md) | This chapter covers the two JSON files the CLI reads, icons.json and tsconfig.json, and how they work together to map… |
+| [Internal Design](docs/internal_design.md) | The codebase is organized around a small TypeScript src/ tree with a CLI entry point, configuration helpers, provider… |
+| [Development, Testing, and Distribution](docs/development_testing.md) | This chapter covers the practical workflow for developing the @spreadworks/icons CLI locally, testing it at both unit… |
+| [Development Guide](docs/development.md) | This chapter explains how to work on the package locally, from preparing the Node.js and pnpm development environment… |
+<!-- {{/data}} -->

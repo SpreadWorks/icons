@@ -1,5 +1,9 @@
 # @spreadworks/icons
 
+<!-- {{data("cli.docs.langSwitcher", {labels: "absolute"})}} -->
+**日本語** | [English](../../README.md)
+<!-- {{/data}} -->
+
 `@spreadworks/icons` は、利用先プロジェクトへ React アイコンのソース
 ファイルを生成する開発用 CLI です。アプリケーションは生成済みのファイルを
 直接 import するため、Font Awesome、Lucide、この CLI は実行時依存になりません。
@@ -113,3 +117,18 @@ export function NextLink() {
 生成したアイコンデータには、上流のライセンスが引き続き適用されます。Font Awesome
 Free のファイルには CC BY 4.0 で必要な帰属表示が残り、Font Awesome Pro のデータは
 ライセンスで許可された範囲内に留める必要があります。
+
+<!-- {{data("cli.docs.chapters", {header: "## ドキュメント\n", labels: "章|概要", ignoreError: true})}} -->
+## ドキュメント
+
+| 章 | 概要 |
+| --- | --- |
+| [ツール概要とアーキテクチャ](overview.md) | アーキテクチャと生成ソースのワークフロー。 |
+| [技術スタックと運用](stack_and_ops.md) | 依存関係、パッケージ内容、リリース運用。 |
+| [プロジェクト構成](project_structure.md) | ソース、テスト、ドキュメント、ビルド出力。 |
+| [CLIコマンドリファレンス](cli_commands.md) | `spreadworks-icons add` のオプションと使用例。 |
+| [設定とカスタマイズ](configuration.md) | `icons.json`、`tsconfig.json`、生成ターゲット。 |
+| [内部設計](internal_design.md) | プロバイダー、変換、ランタイムテンプレート、出力処理。 |
+| [開発、テスト、配布](development_testing.md) | ローカル開発、テスト、公開。 |
+| [開発ガイド](development.md) | ビルドと検証コマンド。 |
+<!-- {{/data}} -->

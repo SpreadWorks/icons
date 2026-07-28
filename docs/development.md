@@ -48,7 +48,7 @@ Before considering the work complete, run `pnpm verify`. This command runs the b
 | build | `tsc -p tsconfig.build.json` |
 | test | `tsx --test tests/**/*.test.ts` |
 | verify | `pnpm build && pnpm test && node tests/verify-public-package.mjs && node tests/test-consumer.mjs` |
-| release:check | `pnpm verify && pnpm publish --dry-run --access public` |
+| release:check | `pnpm publish --dry-run --access public` |
 | prepublishOnly | `pnpm verify` |
 <!-- {{/data}} -->
 

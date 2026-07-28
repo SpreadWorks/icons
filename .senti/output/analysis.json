@@ -1,12 +1,12 @@
 {
-  "analyzedAt": "2026-07-28T03:47:13.584Z",
+  "analyzedAt": "2026-07-28T06:42:01.401Z",
   "package": {
     "entries": [
       {
         "file": "package.json",
-        "hash": "f155f215b834f2bfe7365c39f18b6301",
+        "hash": "e5890a0dad92b20a1665c0946a4976d9",
         "lines": 46,
-        "mtime": "2026-07-28T02:35:36.302Z",
+        "mtime": "2026-07-28T05:42:54.635Z",
         "packageDeps": {
           "dependencies": {
             "@fortawesome/free-brands-svg-icons": "^6.7.2",
@@ -28,29 +28,30 @@
           "build": "tsc -p tsconfig.build.json",
           "test": "tsx --test tests/**/*.test.ts",
           "verify": "pnpm build && pnpm test && node tests/verify-public-package.mjs && node tests/test-consumer.mjs",
-          "release:check": "pnpm verify && pnpm publish --dry-run --access public",
+          "release:check": "pnpm publish --dry-run --access public",
           "prepublishOnly": "pnpm verify"
         },
         "composerDeps": null,
         "composerScripts": null,
         "makefileTest": null,
         "id": "fcfb9577",
-        "summary": "Defines the `@spreadworks/icons` package as a public ESM CLI for generating owned, tree-shakeable React SVG icon source files. It also declares the build, test, verification, and publish workflow for the package.",
-        "detail": "The manifest exposes a single CLI binary, `spreadworks-icons`, and publishes typed ESM entry points from the `dist` directory. Its runtime dependencies are limited to icon source libraries from Font Awesome and Lucide, indicating that the package consumes upstream icon datasets during code generation. Development tooling is centered on TypeScript, `tsx`, and esbuild, with scripts covering compilation, test execution, consumer verification, and dry-run release checks. The `prepublishOnly` hook enforces a full verification pass before publishing, which helps protect package integrity and public release quality.",
+        "summary": "Package manifest for a TypeScript-based icon generation library that publishes tree-shakeable React SVG sources and exposes a CLI binary. It defines public package exports, distribution files, and release verification steps.",
+        "detail": "The manifest configures the package as an ES module and publishes only built artifacts and core documentation files. It exposes both a library entry point with TypeScript declarations and a command-line executable from the compiled `dist` directory. Runtime dependencies focus on upstream icon packs, while development dependencies cover TypeScript, React typings, testing with `tsx`, and bundling support. The script set emphasizes build, test, package verification, and dry-run publishing, with `prepublishOnly` enforcing a full verification pipeline before release.",
         "chapter": "stack_and_ops",
         "role": "config",
         "enrich": {
-          "processedAt": "2026-07-28T03:21:03.300Z",
+          "processedAt": "2026-07-28T06:28:38.049Z",
           "attempts": 1
         },
         "keywords": [
           "package manifest",
           "npm package",
-          "CLI tool",
-          "ESM module",
-          "TypeScript build",
-          "icon generator",
-          "React SVG",
+          "pnpm",
+          "ES modules",
+          "React icons",
+          "SVG code generation",
+          "CLI binary",
+          "tree shaking",
           "publish workflow"
         ]
       }
@@ -60,5 +61,5 @@
     },
     "dataSourceHash": "1b6b8c1f2f0fa40c6c80140e9474330f"
   },
-  "enrichedAt": "2026-07-28T03:21:03.300Z"
+  "enrichedAt": "2026-07-28T06:28:38.049Z"
 }

@@ -1,5 +1,9 @@
 # @spreadworks/icons
 
+<!-- {{data("cli.docs.langSwitcher", {labels: "absolute"})}} -->
+[日本語](docs/ja/README.md) | **English**
+<!-- {{/data}} -->
+
 `@spreadworks/icons` is a development CLI that generates React icon source
 files into a consuming project. Applications import the generated files
 directly, so Font Awesome, Lucide, and this CLI are not runtime dependencies.
@@ -117,3 +121,18 @@ consumer's edits.
 Generated icon data remains subject to its upstream license. Font Awesome Free
 files retain their required CC BY 4.0 attribution, and Font Awesome Pro data
 must remain within the scope permitted by its license.
+
+<!-- {{data("cli.docs.chapters", {header: "## Documentation\n", labels: "Chapter|Summary", ignoreError: true})}} -->
+## Documentation
+
+| Chapter | Summary |
+| --- | --- |
+| [Tool Overview and Architecture](docs/overview.md) | Architecture and generated-source workflow. |
+| [Technology Stack and Operations](docs/stack_and_ops.md) | Dependencies, package contents, and release operations. |
+| [Project Structure](docs/project_structure.md) | Source, tests, documentation, and build output. |
+| [CLI Command Reference](docs/cli_commands.md) | `spreadworks-icons add` options and examples. |
+| [Configuration and Customization](docs/configuration.md) | `icons.json`, `tsconfig.json`, and generation targets. |
+| [Internal Design](docs/internal_design.md) | Providers, transforms, runtime templates, and output writing. |
+| [Development, Testing, and Distribution](docs/development_testing.md) | Local development, tests, and publishing. |
+| [Development Guide](docs/development.md) | Build and verification commands. |
+<!-- {{/data}} -->
