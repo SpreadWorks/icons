@@ -11,7 +11,7 @@ export async function loadSvgFileIcon(file: string, name: string): Promise<Gener
       lines: [
         "Generated from a user-supplied SVG file.",
         "Verify that the source asset may be redistributed before publishing.",
-        "Converted to TypeScript by @company/icon-generator.",
+        "Converted to TypeScript by @spreadworks/icon-generator.",
       ],
     },
   };

@@ -1,13 +1,14 @@
 {
-  "name": "company-icons-workspace",
+  "name": "spreadworks-icons-workspace",
   "private": true,
   "packageManager": "pnpm@8.15.9",
   "devDependencies": {
     "esbuild": "^0.24.0"
   },
   "scripts": {
-    "build": "pnpm --filter @company/icons build && pnpm --filter @company/icon-generator build",
-    "test": "pnpm --filter @company/icons test && pnpm --filter @company/icon-generator test",
-    "verify": "pnpm build && pnpm test && node scripts/verify-public-package.mjs && node scripts/test-consumer.mjs"
+    "build": "pnpm --filter @spreadworks/icons build && pnpm --filter @spreadworks/icon-generator build",
+    "test": "pnpm --filter @spreadworks/icons test && pnpm --filter @spreadworks/icon-generator test",
+    "verify": "pnpm build && pnpm test && node scripts/verify-public-package.mjs && node scripts/test-consumer.mjs",
+    "release:check": "pnpm verify && pnpm --filter @spreadworks/icons publish --dry-run --access public"
   }
 }

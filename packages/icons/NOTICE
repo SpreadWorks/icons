@@ -1,9 +1,9 @@
-@company/icons includes generated data derived from Font Awesome Free.
+@spreadworks/icons includes generated data derived from Font Awesome Free.
 
 Font Awesome Free is Copyright Fonticons, Inc. and licensed under CC BY 4.0:
 https://creativecommons.org/licenses/by/4.0/
 
 The Font Awesome data in this package has been converted into TypeScript icon
-definitions by @company/icon-generator. Brand icons may be trademarks of their
+definitions by @spreadworks/icon-generator. Brand icons may be trademarks of their
 respective owners and must only be used to represent the relevant company,
 product, or service.

@@ -4,7 +4,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { build } from "esbuild";
 
-const consumerDirectory = await mkdtemp(join(tmpdir(), "company-icons-consumer-"));
+const consumerDirectory = await mkdtemp(join(tmpdir(), "spreadworks-icons-consumer-"));
 const packageDirectory = resolve("packages/icons");
 const packed = JSON.parse(
   execFileSync("npm", ["pack", "--json", "--pack-destination", consumerDirectory, "--ignore-scripts"], {
@@ -20,7 +20,7 @@ await writeFile(
 );
 await writeFile(
   join(consumerDirectory, "bundle-entry.ts"),
-  'import { chevronRight } from "@company/icons/icons/fontawesome/free-solid/chevron-right"; export { chevronRight };',
+  'import { chevronRight } from "@spreadworks/icons/icons/fontawesome/free-solid/chevron-right"; export { chevronRight };',
 );
 execFileSync(
   "npm",
@@ -39,8 +39,8 @@ execFileSync(
 await writeFile(
   join(consumerDirectory, "index.tsx"),
   [
-    'import { Icon } from "@company/icons";',
-    'import { chevronRight } from "@company/icons/icons/fontawesome/free-solid/chevron-right";',
+    'import { Icon } from "@spreadworks/icons";',
+    'import { chevronRight } from "@spreadworks/icons/icons/fontawesome/free-solid/chevron-right";',
     "",
     "export const nextIcon = <Icon icon={chevronRight} aria-label=\"Next\" />;",
   ].join("\n"),
@@ -79,7 +79,7 @@ execFileSync(
   [
     "--input-type=module",
     "--eval",
-    'import { Icon } from "@company/icons"; import { chevronRight } from "@company/icons/icons/fontawesome/free-solid/chevron-right"; if (typeof Icon !== "function" || chevronRight.name !== "chevron-right") process.exit(1);',
+    'import { Icon } from "@spreadworks/icons"; import { chevronRight } from "@spreadworks/icons/icons/fontawesome/free-solid/chevron-right"; if (typeof Icon !== "function" || chevronRight.name !== "chevron-right") process.exit(1);',
   ],
   { cwd: consumerDirectory, stdio: "inherit" },
 );

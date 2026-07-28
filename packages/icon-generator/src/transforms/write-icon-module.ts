@@ -24,7 +24,7 @@ function formatNodes(nodes: GeneratedIcon["definition"]["nodes"], indent = 2): s
 
 export async function writeIconModule(icon: GeneratedIcon, outputPath: string): Promise<void> {
   const header = icon.attribution.lines.map((line) => ` * ${line}`).join("\n");
-  const content = `/**\n${header}\n */\nimport type { IconDefinition } from "@company/icons";\n\nexport const ${toIdentifier(icon.definition.name)}: IconDefinition = {\n  name: ${JSON.stringify(icon.definition.name)},\n  viewBox: ${JSON.stringify(icon.definition.viewBox)},\n  nodes: [\n${formatNodes(icon.definition.nodes)}\n  ],\n};\n`;
+  const content = `/**\n${header}\n */\nimport type { IconDefinition } from "@spreadworks/icons";\n\nexport const ${toIdentifier(icon.definition.name)}: IconDefinition = {\n  name: ${JSON.stringify(icon.definition.name)},\n  viewBox: ${JSON.stringify(icon.definition.viewBox)},\n  nodes: [\n${formatNodes(icon.definition.nodes)}\n  ],\n};\n`;
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, content, "utf8");
 }

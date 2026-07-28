@@ -1,5 +1,5 @@
 {
-  "name": "@company/icon-generator",
+  "name": "@spreadworks/icon-generator",
   "version": "0.1.0",
   "private": true,
   "description": "Generate provider-neutral TypeScript icon modules.",

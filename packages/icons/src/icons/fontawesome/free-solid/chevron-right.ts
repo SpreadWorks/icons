@@ -2,7 +2,7 @@
  * Contains data derived from Font Awesome Free.
  * © Fonticons, Inc. — CC BY 4.0
  * https://creativecommons.org/licenses/by/4.0/
- * Converted to TypeScript by @company/icon-generator.
+ * Converted to TypeScript by @spreadworks/icon-generator.
  */
 import type { IconDefinition } from "../../../icon-types.js";
 

@@ -1,10 +1,16 @@
 {
-  "name": "@company/icons",
+  "name": "@spreadworks/icons",
   "version": "0.1.0",
   "description": "Tree-shakeable, generated SVG icons for React.",
   "type": "module",
   "sideEffects": false,
+  "license": "MIT",
+  "keywords": ["icons", "react", "svg", "tree-shaking"],
   "files": ["dist", "README.md", "LICENSE", "NOTICE"],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -28,6 +34,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "test": "tsx --test tests/**/*.test.ts"
+    "test": "tsx --test tests/**/*.test.ts",
+    "prepublishOnly": "pnpm --dir ../.. verify"
   }
 }

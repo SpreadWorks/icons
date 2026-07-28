@@ -6,7 +6,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@company/icons": ["./src/index.ts"]
+      "@spreadworks/icons": ["./src/index.ts"]
     }
   },
   "include": ["src"]

@@ -1,13 +1,13 @@
-# @company/icons
+# @spreadworks/icons
 
-`@company/icons` is a public, tree-shakeable React icon package. It contains
+`@spreadworks/icons` is a public, tree-shakeable React icon package. It contains
 only renderer code, types, and generated icon definitions; it has no Font
 Awesome packages or registry credentials at install or application-build time.
 
 ## Install
 
 ```sh
-npm install @company/icons react
+npm install @spreadworks/icons react
 ```
 
 ## Use one icon
@@ -16,8 +16,8 @@ Import an icon from its module rather than a barrel file so bundlers can retain
 only the icon your application uses.
 
 ```tsx
-import { Icon } from '@company/icons'
-import { chevronRight } from '@company/icons/icons/fontawesome/free-solid/chevron-right'
+import { Icon } from '@spreadworks/icons'
+import { chevronRight } from '@spreadworks/icons/icons/fontawesome/free-solid/chevron-right'
 
 export function NextLink() {
   return <Icon icon={chevronRight} aria-label="Next" />
@@ -27,7 +27,7 @@ export function NextLink() {
 ## Providers
 
 Definitions can be generated from Font Awesome Free, Lucide, and local SVG
-files by the separate `@company/icon-generator` tool. The generated TypeScript
+files by the separate `@spreadworks/icon-generator` tool. The generated TypeScript
 is owned by this package and uses a provider-neutral `IconDefinition` format.
 
 ## License and attribution

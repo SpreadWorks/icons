@@ -17,7 +17,7 @@ export async function loadLucideIcon(name: string): Promise<GeneratedIcon> {
       lines: [
         "Contains data derived from Lucide.",
         "Lucide is licensed under the ISC License.",
-        "Converted to TypeScript by @company/icon-generator.",
+        "Converted to TypeScript by @spreadworks/icon-generator.",
       ],
     },
   };
