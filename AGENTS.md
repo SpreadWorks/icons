@@ -1,3 +1,12 @@
+# Spreadworks Icons
+
+`@spreadworks/icons` を公開するための pnpm workspace。React 向けの tree-shakeable な SVG icon renderer と、生成済み icon module を `packages/icons` に持つ。`packages/icon-generator` は Font Awesome Free、Lucide、ローカル SVG を共通の icon 定義へ変換する private な生成ツールであり、公開 package には provider の依存や認証情報を含めない。
+
+## コミット
+
+- **MUST: コミットメッセージは英語で書くこと。**
+- sign-off 行や co-authored-by トレーラーを付けないこと。
+
 <!-- {{data("agents.senti")}} -->
 ## Spec-Driven Development (Spec-Driven Development)
 
@@ -31,11 +40,6 @@
 
 - `src/skills/`, `src/presets/` のスキル・プリセット・テンプレートを変更した場合は `senti upgrade` を実行して、プロジェクトのスキル・設定に反映すること。
 - 公式 preset migration は実 plugin repository の clean な Git HEAD と contribution path で検証すること。
-
-### コミット
-
-- **MUST: コミットメッセージは英語で書くこと。**
-- sign-off 行や co-authored-by トレーラーを付けないこと。
 
 ### docs/ 編集ルール
 
