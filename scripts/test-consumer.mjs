@@ -10,6 +10,7 @@ const packed = JSON.parse(
   execFileSync("npm", ["pack", "--json", "--pack-destination", consumerDirectory, "--ignore-scripts"], {
     cwd: packageDirectory,
     encoding: "utf8",
+    env: { ...process.env, npm_config_dry_run: "false" },
   }),
 );
 const tarball = join(consumerDirectory, packed[0].filename);
