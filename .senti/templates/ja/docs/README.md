@@ -33,14 +33,7 @@ pnpm add -D @spreadworks/icons
       "@icons": ["./src/icons/index.ts"],
       "@icons/*": ["./src/icons/*"],
       "@fortawesome/react-fontawesome": ["./src/icons/fontawesome/FontAwesomeIcon.tsx"],
-      "@fortawesome/free-solid-svg-icons/*": ["./src/icons/fontawesome/free-solid/*"],
-      "@fortawesome/free-brands-svg-icons/*": ["./src/icons/fontawesome/free-brands/*"],
-      "@fortawesome/pro-light-svg-icons/*": ["./src/icons/fontawesome/pro-light/*"],
-      "@fortawesome/pro-regular-svg-icons/*": ["./src/icons/fontawesome/pro-regular/*"],
-      "@fortawesome/pro-solid-svg-icons/*": ["./src/icons/fontawesome/pro-solid/*"],
-      "@fortawesome/pro-thin-svg-icons/*": ["./src/icons/fontawesome/pro-thin/*"],
-      "@fortawesome/pro-duotone-svg-icons/*": ["./src/icons/fontawesome/pro-duotone/*"],
-      "@fortawesome/fontawesome-svg-core/styles.css": ["./src/icons/fontawesome/fontawesome-svg-core/styles.css"]
+      "@fortawesome/*": ["./src/icons/fontawesome/*"]
     }
   }
 }
@@ -80,7 +73,7 @@ Font Awesome Pro のアイコンは、利用先プロジェクトにライセン
 pnpm exec spreadworks-icons add --provider fontawesome --source pro-light --icon chevron-right --target icons
 ```
 
-この例では `src/icons/fontawesome/pro-light/faChevronRight.ts` が作成され、
+この例では `src/icons/fontawesome/pro-light-svg-icons/faChevronRight.ts` が作成され、
 Font Awesome のモジュール名・シンボル名と同じ `faChevronRight` を export します。
 
 ## 生成したアイコンを使う
@@ -115,5 +108,8 @@ export function NextLink() {
 
 ## ライセンス
 
-生成した Font Awesome Free のファイルには CC BY 4.0 の帰属表示が残ります。Font
-Awesome Pro のデータは、適用される Font Awesome ライセンスの範囲外へ再配布してはいけません。
+`@spreadworks/icons` は [MIT License](LICENSE) で提供します。
+
+生成したアイコンデータには、上流のライセンスが引き続き適用されます。Font Awesome
+Free のファイルには CC BY 4.0 で必要な帰属表示が残り、Font Awesome Pro のデータは
+ライセンスで許可された範囲内に留める必要があります。

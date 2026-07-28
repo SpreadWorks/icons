@@ -2,7 +2,7 @@
 import { resolve } from "node:path";
 
 import { findIconsConfig, resolveTargetDirectory } from "./config.js";
-import { loadFontAwesomeIcon } from "./providers/fontawesome.js";
+import { fontAwesomeOutputDirectory, loadFontAwesomeIcon } from "./providers/fontawesome.js";
 import { loadLucideIcon } from "./providers/lucide.js";
 import { loadSvgFileIcon } from "./providers/svg-file.js";
 import { ensureRuntimeFiles } from "./templates/runtime.js";
@@ -40,8 +40,9 @@ async function main(): Promise<void> {
   const name = args.name ?? args.icon;
   if (!name) throw new Error("--icon (or --name for svg-file) is required.");
 
+  const fontAwesomeSource = provider === "fontawesome" ? required(args, "source") : undefined;
   const icon = await (provider === "fontawesome"
-    ? loadFontAwesomeIcon(required(args, "source"), name)
+    ? loadFontAwesomeIcon(fontAwesomeSource!, name)
     : provider === "lucide"
       ? loadLucideIcon(name)
       : provider === "svg-file"
@@ -52,7 +53,7 @@ async function main(): Promise<void> {
     target: required(args, "target"),
   });
   await ensureRuntimeFiles(targetDirectory);
-  const directory = provider === "fontawesome" ? `fontawesome/${required(args, "source")}` : provider === "svg-file" ? "custom" : "lucide";
+  const directory = provider === "fontawesome" ? `fontawesome/${fontAwesomeOutputDirectory(fontAwesomeSource!)}` : provider === "svg-file" ? "custom" : "lucide";
   const filename = provider === "fontawesome" ? icon.symbol! : name;
   const outputPath = await writeIconModule({ icon, targetDirectory, outputRelativePath: `${directory}/${filename}.ts` });
   process.stdout.write(`Generated ${outputPath}\n`);

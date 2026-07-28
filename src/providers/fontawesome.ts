@@ -12,6 +12,14 @@ const packages = {
 
 type FontAwesomeSource = keyof typeof packages;
 
+export function fontAwesomeOutputDirectory(source: string): string {
+  if (!(source in packages)) {
+    throw new Error(`Unsupported Font Awesome source "${source}".`);
+  }
+
+  return packages[source as FontAwesomeSource].replace("@fortawesome/", "");
+}
+
 function toExportName(name: string): string {
   return `fa${name
     .split("-")
@@ -21,11 +29,8 @@ function toExportName(name: string): string {
 }
 
 export async function loadFontAwesomeIcon(source: string, name: string): Promise<GeneratedIcon> {
-  if (!(source in packages)) {
-    throw new Error(`Unsupported Font Awesome source "${source}".`);
-  }
-
-  const module = (await import(packages[source as FontAwesomeSource])) as Record<string, unknown>;
+  const outputDirectory = fontAwesomeOutputDirectory(source);
+  const module = (await import(`@fortawesome/${outputDirectory}`)) as Record<string, unknown>;
   const definition = module[toExportName(name)] as { icon?: [number, number, unknown, unknown, string | string[]] } | undefined;
   if (!definition?.icon) throw new Error(`Font Awesome ${source} does not contain "${name}".`);
 

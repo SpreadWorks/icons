@@ -29,9 +29,7 @@ await writeFile(
         "@icons": ["./src/icons/index.ts"],
         "@icons/*": ["./src/icons/*"],
         "@fortawesome/react-fontawesome": ["./src/icons/fontawesome/FontAwesomeIcon.tsx"],
-        "@fortawesome/free-solid-svg-icons/*": ["./src/icons/fontawesome/free-solid/*"],
-        "@fortawesome/pro-light-svg-icons/*": ["./src/icons/fontawesome/pro-light/*"],
-        "@fortawesome/fontawesome-svg-core/styles.css": ["./src/icons/fontawesome/fontawesome-svg-core/styles.css"],
+        "@fortawesome/*": ["./src/icons/fontawesome/*"],
       },
     },
     include: ["src"],
@@ -69,13 +67,13 @@ for (const file of [
   "index.ts",
   "fontawesome/FontAwesomeIcon.tsx",
   "fontawesome/fontawesome-svg-core/styles.css",
-  "fontawesome/free-solid/faChevronRight.ts",
-  "fontawesome/pro-light/faChevronRight.ts",
+  "fontawesome/free-solid-svg-icons/faChevronRight.ts",
+  "fontawesome/pro-light-svg-icons/faChevronRight.ts",
   "custom/brand-logo.ts",
 ]) {
   await readFile(join(iconDirectory, file), "utf8");
 }
-const generatedIcon = await readFile(join(iconDirectory, "fontawesome/free-solid/faChevronRight.ts"), "utf8");
+const generatedIcon = await readFile(join(iconDirectory, "fontawesome/free-solid-svg-icons/faChevronRight.ts"), "utf8");
 if (/from\s+["']@spreadworks\/icons/.test(generatedIcon)) {
   throw new Error("Generated icon must not depend on the generator package.");
 }

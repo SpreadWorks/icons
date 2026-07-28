@@ -34,14 +34,7 @@ Configure that alias and the optional Font Awesome compatibility aliases in
       "@icons": ["./src/icons/index.ts"],
       "@icons/*": ["./src/icons/*"],
       "@fortawesome/react-fontawesome": ["./src/icons/fontawesome/FontAwesomeIcon.tsx"],
-      "@fortawesome/free-solid-svg-icons/*": ["./src/icons/fontawesome/free-solid/*"],
-      "@fortawesome/free-brands-svg-icons/*": ["./src/icons/fontawesome/free-brands/*"],
-      "@fortawesome/pro-light-svg-icons/*": ["./src/icons/fontawesome/pro-light/*"],
-      "@fortawesome/pro-regular-svg-icons/*": ["./src/icons/fontawesome/pro-regular/*"],
-      "@fortawesome/pro-solid-svg-icons/*": ["./src/icons/fontawesome/pro-solid/*"],
-      "@fortawesome/pro-thin-svg-icons/*": ["./src/icons/fontawesome/pro-thin/*"],
-      "@fortawesome/pro-duotone-svg-icons/*": ["./src/icons/fontawesome/pro-duotone/*"],
-      "@fortawesome/fontawesome-svg-core/styles.css": ["./src/icons/fontawesome/fontawesome-svg-core/styles.css"]
+      "@fortawesome/*": ["./src/icons/fontawesome/*"]
     }
   }
 }
@@ -82,7 +75,7 @@ private distribution scope.
 pnpm exec spreadworks-icons add --provider fontawesome --source pro-light --icon chevron-right --target icons
 ```
 
-This produces `src/icons/fontawesome/pro-light/faChevronRight.ts` and exports
+This produces `src/icons/fontawesome/pro-light-svg-icons/faChevronRight.ts` and exports
 `faChevronRight`, matching Font Awesome's module and symbol names.
 
 ## Use generated icons
@@ -119,6 +112,8 @@ consumer's edits.
 
 ## License
 
-Generated Font Awesome Free files retain CC BY 4.0 attribution. Font Awesome
-Pro data must never be redistributed outside the scope of the applicable Font
-Awesome license.
+`@spreadworks/icons` is licensed under the [MIT License](LICENSE).
+
+Generated icon data remains subject to its upstream license. Font Awesome Free
+files retain their required CC BY 4.0 attribution, and Font Awesome Pro data
+must remain within the scope permitted by its license.
