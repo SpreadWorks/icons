@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "description": "Generate owned, tree-shakeable React SVG icon source files.",
   "type": "module",
-  "packageManager": "pnpm@8.15.9",
+  "packageManager": "pnpm@11.17.0",
   "license": "MIT",
   "keywords": ["icons", "react", "svg", "codegen", "tree-shaking"],
   "files": ["dist", "README.md", "LICENSE", "NOTICE"],
