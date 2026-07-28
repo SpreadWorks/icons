@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { build } from "esbuild";
@@ -25,7 +25,14 @@ await writeFile(
       moduleResolution: "Bundler",
       skipLibCheck: true,
       baseUrl: ".",
-      paths: { "@icons/*": ["./src/icons/*"] },
+      paths: {
+        "@icons": ["./src/icons/index.ts"],
+        "@icons/*": ["./src/icons/*"],
+        "@fortawesome/react-fontawesome": ["./src/icons/fontawesome/FontAwesomeIcon.tsx"],
+        "@fortawesome/free-solid-svg-icons/*": ["./src/icons/fontawesome/free-solid/*"],
+        "@fortawesome/pro-light-svg-icons/*": ["./src/icons/fontawesome/pro-light/*"],
+        "@fortawesome/fontawesome-svg-core/styles.css": ["./src/icons/fontawesome/fontawesome-svg-core/styles.css"],
+      },
     },
     include: ["src"],
   }),
@@ -37,40 +44,67 @@ execFileSync(
   { cwd: consumerDirectory, stdio: "inherit", env: { ...process.env, npm_config_dry_run: "false" } },
 );
 
+const proPackageDirectory = join(consumerDirectory, "node_modules/@fortawesome/pro-light-svg-icons");
+await mkdir(proPackageDirectory, { recursive: true });
+await writeFile(join(proPackageDirectory, "package.json"), JSON.stringify({ name: "@fortawesome/pro-light-svg-icons", type: "module", exports: "./index.js" }));
+await writeFile(
+  join(proPackageDirectory, "index.js"),
+  'export const faChevronRight = { icon: [320, 512, [], "f054", "M0 0h320v512H0z"] };',
+);
+
 const command = join(consumerDirectory, "node_modules/.bin/spreadworks-icons");
 for (const args of [
   ["add", "--provider", "fontawesome", "--source", "free-solid", "--icon", "chevron-right", "--target", "icons"],
   ["add", "--provider", "fontawesome", "--source", "free-solid", "--icon", "xmark", "--target", "icons"],
+  ["add", "--provider", "fontawesome", "--source", "pro-light", "--icon", "chevron-right", "--target", "icons"],
   ["add", "--provider", "svg-file", "--file", "brand.svg", "--name", "brand-logo", "--target", "icons"],
 ]) {
   execFileSync(command, args, { cwd: consumerDirectory, stdio: "inherit" });
 }
 
 const iconDirectory = join(consumerDirectory, "src/icons");
-for (const file of ["Icon.tsx", "icon-types.ts", "index.ts", "fontawesome/free-solid/chevron-right.ts", "custom/brand-logo.ts"]) {
+for (const file of [
+  "Icon.tsx",
+  "icon-types.ts",
+  "index.ts",
+  "fontawesome/FontAwesomeIcon.tsx",
+  "fontawesome/fontawesome-svg-core/styles.css",
+  "fontawesome/free-solid/faChevronRight.ts",
+  "fontawesome/pro-light/faChevronRight.ts",
+  "custom/brand-logo.ts",
+]) {
   await readFile(join(iconDirectory, file), "utf8");
 }
-const generatedIcon = await readFile(join(iconDirectory, "fontawesome/free-solid/chevron-right.ts"), "utf8");
+const generatedIcon = await readFile(join(iconDirectory, "fontawesome/free-solid/faChevronRight.ts"), "utf8");
 if (/from\s+["']@spreadworks\/icons/.test(generatedIcon)) {
   throw new Error("Generated icon must not depend on the generator package.");
 }
+if (!generatedIcon.includes("export const faChevronRight")) {
+  throw new Error("Generated Font Awesome icon must preserve its export name.");
+}
 
 await writeFile(
-  join(consumerDirectory, "src/entry.ts"),
-  'import { chevronRight } from "@icons/fontawesome/free-solid/chevron-right"; export { chevronRight };',
+  join(consumerDirectory, "src/entry.tsx"),
+  [
+    'import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";',
+    'import { faChevronRight } from "@fortawesome/pro-light-svg-icons/faChevronRight";',
+    'import "@fortawesome/fontawesome-svg-core/styles.css";',
+    'export const legacyIcon = <FontAwesomeIcon icon={faChevronRight} size="sm" flip="horizontal" />;',
+  ].join("\n"),
 );
 execFileSync(join(consumerDirectory, "node_modules/.bin/tsc"), ["-p", "tsconfig.json"], { cwd: consumerDirectory, stdio: "inherit" });
 const bundle = await build({
   absWorkingDir: consumerDirectory,
-  entryPoints: ["src/entry.ts"],
+  entryPoints: ["src/entry.tsx"],
   bundle: true,
   format: "esm",
   minify: true,
   platform: "browser",
+  outdir: "out",
   write: false,
 });
-const bundledCode = bundle.outputFiles[0]?.text ?? "";
-if (!bundledCode.includes("chevron-right") || bundledCode.includes("xmark")) {
+const bundledCode = bundle.outputFiles.find((file) => file.path.endsWith(".js"))?.text ?? "";
+if (!bundledCode.includes("chevron-right") || bundledCode.includes("faXmark") || bundledCode.includes("@spreadworks/icons")) {
   throw new Error("A consumer bundle must retain only its imported icon.");
 }
 

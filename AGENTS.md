@@ -2,6 +2,9 @@
 
 `@spreadworks/icons` を公開する単一の CLI package。利用者プロジェクトの `icons.json` と TypeScript path alias を読み、React 向け SVG renderer・型・icon module を利用者の target へ生成する。生成物は利用者が所有し、アプリケーションは Font Awesome、Lucide、またはこの CLI package を runtime dependency としない。
 
+- **MUST: 生成した icon ファイルをこのプロジェクト内に置かないこと。** 生成先は必ず利用者プロジェクトの設定済み target とする。
+- **MUST: プロジェクト内容を大きく変更した場合は、`.senti/templates/*/docs/README.md` の内容も正しく更新すること。**
+
 ## コミット
 
 - **MUST: ユーザーが明示的に指示するまでコミットしないこと。**

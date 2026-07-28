@@ -36,7 +36,8 @@ export async function writeIconModule(options: {
   let typeImport = relative(dirname(outputPath), runtimeTypePath).replaceAll("\\", "/");
   if (!typeImport.startsWith(".")) typeImport = `./${typeImport}`;
   const header = options.icon.attribution.lines.map((line) => ` * ${line}`).join("\n");
-  const content = `/**\n${header}\n */\nimport type { IconDefinition } from ${JSON.stringify(typeImport)};\n\nexport const ${toIdentifier(options.icon.definition.name)}: IconDefinition = {\n  name: ${JSON.stringify(options.icon.definition.name)},\n  viewBox: ${JSON.stringify(options.icon.definition.viewBox)},\n  nodes: [\n${formatNodes(options.icon.definition.nodes)}\n  ],\n};\n`;
+  const symbol = options.icon.symbol ?? toIdentifier(options.icon.definition.name);
+  const content = `/**\n${header}\n */\nimport type { IconDefinition } from ${JSON.stringify(typeImport)};\n\nexport const ${symbol}: IconDefinition = {\n  name: ${JSON.stringify(options.icon.definition.name)},\n  viewBox: ${JSON.stringify(options.icon.definition.viewBox)},\n  nodes: [\n${formatNodes(options.icon.definition.nodes)}\n  ],\n};\n`;
   await mkdir(dirname(outputPath), { recursive: true });
   await writeFile(outputPath, content, "utf8");
   return outputPath;

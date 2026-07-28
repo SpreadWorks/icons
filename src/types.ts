@@ -27,4 +27,6 @@ export type Attribution = {
 export type GeneratedIcon = {
   definition: IconDefinition;
   attribution: Attribution;
+  /** A provider-compatible export name, such as Font Awesome's faChevronRight. */
+  symbol?: string;
 };

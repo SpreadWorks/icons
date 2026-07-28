@@ -3,6 +3,11 @@ import type { GeneratedIcon } from "../types.js";
 const packages = {
   "free-solid": "@fortawesome/free-solid-svg-icons",
   "free-brands": "@fortawesome/free-brands-svg-icons",
+  "pro-light": "@fortawesome/pro-light-svg-icons",
+  "pro-regular": "@fortawesome/pro-regular-svg-icons",
+  "pro-solid": "@fortawesome/pro-solid-svg-icons",
+  "pro-thin": "@fortawesome/pro-thin-svg-icons",
+  "pro-duotone": "@fortawesome/pro-duotone-svg-icons",
 } as const;
 
 type FontAwesomeSource = keyof typeof packages;
@@ -17,7 +22,7 @@ function toExportName(name: string): string {
 
 export async function loadFontAwesomeIcon(source: string, name: string): Promise<GeneratedIcon> {
   if (!(source in packages)) {
-    throw new Error(`Unsupported Font Awesome source "${source}". Use free-solid or free-brands.`);
+    throw new Error(`Unsupported Font Awesome source "${source}".`);
   }
 
   const module = (await import(packages[source as FontAwesomeSource])) as Record<string, unknown>;
@@ -25,20 +30,32 @@ export async function loadFontAwesomeIcon(source: string, name: string): Promise
   if (!definition?.icon) throw new Error(`Font Awesome ${source} does not contain "${name}".`);
 
   const [width, height, , , pathData] = definition.icon;
+  const symbol = toExportName(name);
+  const isPro = source.startsWith("pro-");
   return {
     definition: {
       name,
       viewBox: `0 0 ${width} ${height}`,
       nodes: (Array.isArray(pathData) ? pathData : [pathData]).map((d) => ({ tag: "path", attrs: { d } })),
     },
-    attribution: {
-      provider: "fontawesome-free",
-      lines: [
-        "Contains data derived from Font Awesome Free.",
-        "© Fonticons, Inc. — CC BY 4.0",
-        "https://creativecommons.org/licenses/by/4.0/",
-        "Converted to TypeScript by @spreadworks/icons.",
-      ],
-    },
+    symbol,
+    attribution: isPro
+      ? {
+          provider: "custom",
+          lines: [
+            "Contains data derived from Font Awesome Pro.",
+            "Do not redistribute this file outside the scope permitted by your Font Awesome license.",
+            "Converted to TypeScript by @spreadworks/icons.",
+          ],
+        }
+      : {
+          provider: "fontawesome-free",
+          lines: [
+            "Contains data derived from Font Awesome Free.",
+            "© Fonticons, Inc. — CC BY 4.0",
+            "https://creativecommons.org/licenses/by/4.0/",
+            "Converted to TypeScript by @spreadworks/icons.",
+          ],
+        },
   };
 }

@@ -1,0 +1,64 @@
+{
+  "analyzedAt": "2026-07-28T03:36:42.697Z",
+  "package": {
+    "entries": [
+      {
+        "file": "package.json",
+        "hash": "f155f215b834f2bfe7365c39f18b6301",
+        "lines": 46,
+        "mtime": "2026-07-28T02:35:36.302Z",
+        "packageDeps": {
+          "dependencies": {
+            "@fortawesome/free-brands-svg-icons": "^6.7.2",
+            "@fortawesome/free-solid-svg-icons": "^6.7.2",
+            "lucide-static": "^0.468.0"
+          },
+          "devDependencies": {
+            "@types/node": "^22.10.0",
+            "@types/react": "^18.3.0",
+            "@types/react-dom": "^18.3.0",
+            "esbuild": "^0.24.0",
+            "react": "^18.3.1",
+            "react-dom": "^18.3.1",
+            "tsx": "^4.19.0",
+            "typescript": "^5.6.0"
+          }
+        },
+        "packageScripts": {
+          "build": "tsc -p tsconfig.build.json",
+          "test": "tsx --test tests/**/*.test.ts",
+          "verify": "pnpm build && pnpm test && node tests/verify-public-package.mjs && node tests/test-consumer.mjs",
+          "release:check": "pnpm verify && pnpm publish --dry-run --access public",
+          "prepublishOnly": "pnpm verify"
+        },
+        "composerDeps": null,
+        "composerScripts": null,
+        "makefileTest": null,
+        "id": "fcfb9577",
+        "summary": "Defines the `@spreadworks/icons` package as a public ESM CLI for generating owned, tree-shakeable React SVG icon source files. It also declares the build, test, verification, and publish workflow for the package.",
+        "detail": "The manifest exposes a single CLI binary, `spreadworks-icons`, and publishes typed ESM entry points from the `dist` directory. Its runtime dependencies are limited to icon source libraries from Font Awesome and Lucide, indicating that the package consumes upstream icon datasets during code generation. Development tooling is centered on TypeScript, `tsx`, and esbuild, with scripts covering compilation, test execution, consumer verification, and dry-run release checks. The `prepublishOnly` hook enforces a full verification pass before publishing, which helps protect package integrity and public release quality.",
+        "chapter": "stack_and_ops",
+        "role": "config",
+        "enrich": {
+          "processedAt": "2026-07-28T03:21:03.300Z",
+          "attempts": 1
+        },
+        "keywords": [
+          "package manifest",
+          "npm package",
+          "CLI tool",
+          "ESM module",
+          "TypeScript build",
+          "icon generator",
+          "React SVG",
+          "publish workflow"
+        ]
+      }
+    ],
+    "summary": {
+      "total": 1
+    },
+    "dataSourceHash": "1b6b8c1f2f0fa40c6c80140e9474330f"
+  },
+  "enrichedAt": "2026-07-28T03:21:03.300Z"
+}

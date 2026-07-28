@@ -53,7 +53,8 @@ async function main(): Promise<void> {
   });
   await ensureRuntimeFiles(targetDirectory);
   const directory = provider === "fontawesome" ? `fontawesome/${required(args, "source")}` : provider === "svg-file" ? "custom" : "lucide";
-  const outputPath = await writeIconModule({ icon, targetDirectory, outputRelativePath: `${directory}/${name}.ts` });
+  const filename = provider === "fontawesome" ? icon.symbol! : name;
+  const outputPath = await writeIconModule({ icon, targetDirectory, outputRelativePath: `${directory}/${filename}.ts` });
   process.stdout.write(`Generated ${outputPath}\n`);
 }
 
