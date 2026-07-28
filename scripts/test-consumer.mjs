@@ -34,7 +34,7 @@ execFileSync(
     "@types/react@^18.3.0",
     "typescript@^5.6.0",
   ],
-  { cwd: consumerDirectory, stdio: "inherit" },
+  { cwd: consumerDirectory, stdio: "inherit", env: { ...process.env, npm_config_dry_run: "false" } },
 );
 
 await writeFile(
