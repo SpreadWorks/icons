@@ -31,7 +31,7 @@ export async function writeFontAwesomeBarrel(options: {
   }
   if (hasExportedSymbol(content, options.symbol)) return barrelPath;
 
-  const exportStatement = `export { ${options.symbol} } from ${JSON.stringify(`./${options.symbol}.js`)};\n`;
+  const exportStatement = `export { ${options.symbol} } from ${JSON.stringify(`./${options.symbol}`)};\n`;
   await mkdir(dirname(barrelPath), { recursive: true });
   await writeFile(barrelPath, content && !content.endsWith("\n") ? `${content}\n${exportStatement}` : `${content}${exportStatement}`, "utf8");
   return barrelPath;

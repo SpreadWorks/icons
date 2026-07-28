@@ -106,9 +106,19 @@ export function NextLink() {
 }
 ```
 
+生成した Font Awesome パッケージにはそれぞれ `index.ts` barrel も作られるため、
+対象のアイコンを生成した後はパッケージ直下から import できます。
+
+```tsx
+import { faFile, faFileImage } from "@fortawesome/pro-light-svg-icons";
+```
+
 `FontAwesomeIcon` は、このプロジェクトで使う互換 props である `icon`、`size`、
 `color`、`style`、`flip` をサポートします。ランタイムファイルは存在しないときだけ
 作成されるため、以後のアイコン生成で利用者による編集が上書きされることはありません。
+
+生成される consumer 向け TypeScript は extensionless な相対 import を使うため、Next.js
+および webpack の解決条件と互換です。
 
 ## ライセンス
 

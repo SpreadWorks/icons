@@ -3,8 +3,8 @@ import { readFile } from "node:fs/promises";
 
 const manifest = JSON.parse(await readFile("package.json", "utf8"));
 const dependencyNames = Object.keys({ ...manifest.dependencies, ...manifest.devDependencies, ...manifest.peerDependencies });
-if (manifest.name !== "@spreadworks/icons" || manifest.version !== "0.2.0" || manifest.private) {
-  throw new Error("The publish manifest must describe @spreadworks/icons@0.2.0.");
+if (manifest.name !== "@spreadworks/icons" || manifest.version !== "0.2.1" || manifest.private) {
+  throw new Error("The publish manifest must describe @spreadworks/icons@0.2.1.");
 }
 if (dependencyNames.some((name) => /pro-/i.test(name))) {
   throw new Error("The generator must not declare a Font Awesome Pro dependency.");

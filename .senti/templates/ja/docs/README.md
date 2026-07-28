@@ -117,6 +117,9 @@ import { faFile, faFileImage } from "@fortawesome/pro-light-svg-icons";
 `color`、`style`、`flip` をサポートします。ランタイムファイルは存在しないときだけ
 作成されるため、以後のアイコン生成で利用者による編集が上書きされることはありません。
 
+生成される consumer 向け TypeScript は extensionless な相対 import を使うため、Next.js
+および webpack の解決条件と互換です。
+
 ## ライセンス
 
 `@spreadworks/icons` は [MIT License](LICENSE) で提供します。

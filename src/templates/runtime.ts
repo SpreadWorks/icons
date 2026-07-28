@@ -25,7 +25,7 @@ export type IconDefinition = {
 `,
   "Icon.tsx": `import { createElement, forwardRef, type SVGProps } from "react";
 
-import type { IconDefinition, SvgNode } from "./icon-types.js";
+import type { IconDefinition, SvgNode } from "./icon-types";
 
 export type IconProps = Omit<SVGProps<SVGSVGElement>, "children"> & {
   icon: IconDefinition;
@@ -61,8 +61,8 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(function Icon({ icon, t
 `,
   "fontawesome/FontAwesomeIcon.tsx": `import { forwardRef, type CSSProperties, type SVGProps } from "react";
 
-import { Icon } from "../Icon.js";
-import type { IconDefinition } from "../icon-types.js";
+import { Icon } from "../Icon";
+import type { IconDefinition } from "../icon-types";
 
 export type FontAwesomeIconProps = Omit<SVGProps<SVGSVGElement>, "children" | "color"> & {
   icon: IconDefinition;
@@ -113,8 +113,8 @@ export const FontAwesomeIcon = forwardRef<SVGSVGElement, FontAwesomeIconProps>(f
 `,
   "fontawesome/fontawesome-svg-core/styles.css": `/* Legacy import target. FontAwesomeIcon applies its supported styles directly. */
 `,
-  "index.ts": `export { Icon, type IconProps } from "./Icon.js";
-export type { IconDefinition, SvgNode, SvgNodeTag } from "./icon-types.js";
+  "index.ts": `export { Icon, type IconProps } from "./Icon";
+export type { IconDefinition, SvgNode, SvgNodeTag } from "./icon-types";
 `,
 };
 

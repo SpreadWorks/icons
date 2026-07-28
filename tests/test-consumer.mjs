@@ -12,7 +12,10 @@ const packed = JSON.parse(
   }),
 );
 const tarball = join(consumerDirectory, packed[0].filename);
-await writeFile(join(consumerDirectory, "package.json"), JSON.stringify({ name: "icons-consumer", private: true, type: "module" }));
+await writeFile(
+  join(consumerDirectory, "package.json"),
+  JSON.stringify({ name: "icons-consumer", private: true, type: "module", scripts: { build: "next build" } }),
+);
 await writeFile(join(consumerDirectory, "icons.json"), JSON.stringify({ aliases: { icons: "@icons" } }));
 await writeFile(
   join(consumerDirectory, "tsconfig.json"),
@@ -20,10 +23,17 @@ await writeFile(
     compilerOptions: {
       strict: true,
       noEmit: true,
-      jsx: "react-jsx",
+      jsx: "preserve",
       module: "ESNext",
       moduleResolution: "Bundler",
       skipLibCheck: true,
+      lib: ["dom", "dom.iterable", "esnext"],
+      allowJs: true,
+      incremental: true,
+      plugins: [{ name: "next" }],
+      esModuleInterop: true,
+      resolveJsonModule: true,
+      isolatedModules: true,
       baseUrl: ".",
       paths: {
         "@icons": ["./src/icons/index.ts"],
@@ -32,13 +42,14 @@ await writeFile(
         "@fortawesome/*": ["./src/icons/fontawesome/*"],
       },
     },
-    include: ["src"],
+    include: ["next-env.d.ts", "src", "app", ".next/types/**/*.ts"],
+    exclude: ["node_modules"],
   }),
 );
 await writeFile(join(consumerDirectory, "brand.svg"), '<svg viewBox="0 0 10 10"><rect width="10" height="10"/></svg>');
 execFileSync(
   "npm",
-  ["install", "--ignore-scripts", "--no-package-lock", tarball, "react@^18.3.1", "@types/react@^18.3.0", "typescript@^5.6.0"],
+  ["install", "--ignore-scripts", "--no-package-lock", "--no-audit", "--no-fund", tarball, "next@14.2.35", "react@^18.3.1", "react-dom@^18.3.1", "@types/node@^22.10.0", "@types/react@^18.3.0", "@types/react-dom@^18.3.0", "typescript@^5.6.0"],
   { cwd: consumerDirectory, stdio: "inherit", env: { ...process.env, npm_config_dry_run: "false" } },
 );
 
@@ -62,7 +73,7 @@ for (const args of [
 }
 
 const iconDirectory = join(consumerDirectory, "src/icons");
-for (const file of [
+const generatedSourceFiles = [
   "Icon.tsx",
   "icon-types.ts",
   "index.ts",
@@ -74,8 +85,10 @@ for (const file of [
   "fontawesome/pro-light-svg-icons/faFile.ts",
   "fontawesome/pro-light-svg-icons/index.ts",
   "custom/brand-logo.ts",
-]) {
-  await readFile(join(iconDirectory, file), "utf8");
+];
+const generatedSources = await Promise.all(generatedSourceFiles.map((file) => readFile(join(iconDirectory, file), "utf8")));
+if (generatedSources.some((source) => /\b(?:import|export)\s+(?:[^"']*?\s+from\s+)?["']\.{1,2}\/[^"']+\.js["']/.test(source))) {
+  throw new Error("Generated consumer source must use extensionless relative imports.");
 }
 const generatedIcon = await readFile(join(iconDirectory, "fontawesome/free-solid-svg-icons/faChevronRight.ts"), "utf8");
 if (/from\s+["']@spreadworks\/icons/.test(generatedIcon)) {
@@ -85,7 +98,7 @@ if (!generatedIcon.includes("export const faChevronRight")) {
   throw new Error("Generated Font Awesome icon must preserve its export name.");
 }
 const freeBarrel = await readFile(join(iconDirectory, "fontawesome/free-solid-svg-icons/index.ts"), "utf8");
-if (freeBarrel !== 'export { faChevronRight } from "./faChevronRight.js";\nexport { faXmark } from "./faXmark.js";\n') {
+if (freeBarrel !== 'export { faChevronRight } from "./faChevronRight";\nexport { faXmark } from "./faXmark";\n') {
   throw new Error("Generated Font Awesome Free barrel must export each generated icon once.");
 }
 
@@ -116,4 +129,23 @@ if (!bundledCode.includes("chevron-right") || !bundledCode.includes('"file"') ||
   throw new Error("A consumer bundle must retain only its imported icon.");
 }
 
-process.stdout.write("Consumer owns generated runtime and icon source without a runtime generator dependency.\n");
+await mkdir(join(consumerDirectory, "app"), { recursive: true });
+await writeFile(
+  join(consumerDirectory, "app/layout.tsx"),
+  'import type { ReactNode } from "react";\n\nexport default function RootLayout({ children }: { children: ReactNode }) {\n  return <html><body>{children}</body></html>;\n}\n',
+);
+await writeFile(
+  join(consumerDirectory, "app/page.tsx"),
+  [
+    'import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";',
+    'import { faChevronRight } from "@fortawesome/free-solid-svg-icons";',
+    'import { faFile } from "@fortawesome/pro-light-svg-icons";',
+    '',
+    'export default function Page() {',
+    '  return <main><FontAwesomeIcon icon={faChevronRight} /><span>{faFile.name}</span></main>;',
+    '}',
+  ].join("\n"),
+);
+execFileSync(join(consumerDirectory, "node_modules/.bin/next"), ["build"], { cwd: consumerDirectory, stdio: "inherit" });
+
+process.stdout.write("Consumer owns generated runtime and icon source without a runtime generator dependency, including a Next.js 14 build.\n");

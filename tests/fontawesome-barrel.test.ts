@@ -10,7 +10,7 @@ test("creates Font Awesome barrel exports without replacing existing exports", a
   const directory = await mkdtemp(join(tmpdir(), "icons-fontawesome-barrel-"));
   const barrelPath = join(directory, "fontawesome/pro-light-svg-icons/index.ts");
   await mkdir(join(directory, "fontawesome/pro-light-svg-icons"), { recursive: true });
-  await writeFile(barrelPath, 'export { existingIcon as faFile } from "./existing.js";\n');
+  await writeFile(barrelPath, 'export { existingIcon as faFile } from "./existing";\n');
 
   await writeFontAwesomeBarrel({
     targetDirectory: directory,
@@ -25,6 +25,6 @@ test("creates Font Awesome barrel exports without replacing existing exports", a
 
   assert.equal(
     await readFile(barrelPath, "utf8"),
-    'export { existingIcon as faFile } from "./existing.js";\nexport { faFileImage } from "./faFileImage.js";\n',
+    'export { existingIcon as faFile } from "./existing";\nexport { faFileImage } from "./faFileImage";\n',
   );
 });

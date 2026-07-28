@@ -121,6 +121,9 @@ import { faFile, faFileImage } from "@fortawesome/pro-light-svg-icons";
 created only when absent, so later icon generation does not overwrite the
 consumer's edits.
 
+Generated consumer TypeScript uses extensionless relative imports, which are
+compatible with Next.js and webpack resolution.
+
 ## License
 
 `@spreadworks/icons` is licensed under the [MIT License](LICENSE).

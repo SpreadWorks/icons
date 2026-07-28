@@ -32,7 +32,7 @@ export async function writeIconModule(options: {
   const outputPath = resolve(targetDirectory, options.outputRelativePath);
   if (!isWithin(targetDirectory, outputPath)) throw new Error("Generated icon path must stay inside the configured target.");
 
-  const runtimeTypePath = resolve(targetDirectory, "icon-types.js");
+  const runtimeTypePath = resolve(targetDirectory, "icon-types");
   let typeImport = relative(dirname(outputPath), runtimeTypePath).replaceAll("\\", "/");
   if (!typeImport.startsWith(".")) typeImport = `./${typeImport}`;
   const header = options.icon.attribution.lines.map((line) => ` * ${line}`).join("\n");

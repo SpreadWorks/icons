@@ -1,12 +1,12 @@
 {
-  "analyzedAt": "2026-07-28T06:42:01.401Z",
+  "analyzedAt": "2026-07-28T07:17:50.216Z",
   "package": {
     "entries": [
       {
         "file": "package.json",
-        "hash": "e5890a0dad92b20a1665c0946a4976d9",
+        "hash": "f9d11a65fb7ae785e4eddf4332735b64",
         "lines": 46,
-        "mtime": "2026-07-28T05:42:54.635Z",
+        "mtime": "2026-07-28T07:10:20.574Z",
         "packageDeps": {
           "dependencies": {
             "@fortawesome/free-brands-svg-icons": "^6.7.2",
@@ -35,24 +35,24 @@
         "composerScripts": null,
         "makefileTest": null,
         "id": "fcfb9577",
-        "summary": "Package manifest for a TypeScript-based icon generation library that publishes tree-shakeable React SVG sources and exposes a CLI binary. It defines public package exports, distribution files, and release verification steps.",
-        "detail": "The manifest configures the package as an ES module and publishes only built artifacts and core documentation files. It exposes both a library entry point with TypeScript declarations and a command-line executable from the compiled `dist` directory. Runtime dependencies focus on upstream icon packs, while development dependencies cover TypeScript, React typings, testing with `tsx`, and bundling support. The script set emphasizes build, test, package verification, and dry-run publishing, with `prepublishOnly` enforcing a full verification pipeline before release.",
+        "summary": "Package manifest for a React SVG icon code generation library and CLI. It defines distribution outputs, runtime icon source dependencies, and verification steps for publishing.",
+        "detail": "The package is published as an ES module and exposes a single public entry point with generated JavaScript and TypeScript declaration files from `dist`. It also registers a CLI binary, indicating the library can be used both programmatically and from the command line. Runtime dependencies focus on icon source datasets from Font Awesome and Lucide, while development dependencies cover TypeScript, React typings, test execution, and bundling support. The script set emphasizes release safety by chaining build, test, package verification, and dry-run publishing before `prepublishOnly` allows publication.",
         "chapter": "stack_and_ops",
         "role": "config",
         "enrich": {
-          "processedAt": "2026-07-28T06:28:38.049Z",
+          "processedAt": "2026-07-28T07:18:02.239Z",
           "attempts": 1
         },
         "keywords": [
           "package manifest",
           "npm package",
           "pnpm",
-          "ES modules",
-          "React icons",
-          "SVG code generation",
+          "ES module",
           "CLI binary",
+          "icon generator",
+          "React SVG icons",
           "tree shaking",
-          "publish workflow"
+          "publish pipeline"
         ]
       }
     ],
@@ -61,5 +61,5 @@
     },
     "dataSourceHash": "1b6b8c1f2f0fa40c6c80140e9474330f"
   },
-  "enrichedAt": "2026-07-28T06:28:38.049Z"
+  "enrichedAt": "2026-07-28T07:18:02.239Z"
 }
