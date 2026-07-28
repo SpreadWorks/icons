@@ -1,51 +1,19 @@
 import { execFileSync } from "node:child_process";
-import { mkdtemp, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { join } from "node:path";
 import { build } from "esbuild";
 
 const consumerDirectory = await mkdtemp(join(tmpdir(), "spreadworks-icons-consumer-"));
-const packageDirectory = resolve("packages/icons");
 const packed = JSON.parse(
   execFileSync("npm", ["pack", "--json", "--pack-destination", consumerDirectory, "--ignore-scripts"], {
-    cwd: packageDirectory,
     encoding: "utf8",
     env: { ...process.env, npm_config_dry_run: "false" },
   }),
 );
 const tarball = join(consumerDirectory, packed[0].filename);
-
-await writeFile(
-  join(consumerDirectory, "package.json"),
-  JSON.stringify({ name: "icons-consumer-smoke-test", private: true, type: "module" }),
-);
-await writeFile(
-  join(consumerDirectory, "bundle-entry.ts"),
-  'import { chevronRight } from "@spreadworks/icons/icons/fontawesome/free-solid/chevron-right"; export { chevronRight };',
-);
-execFileSync(
-  "npm",
-  [
-    "install",
-    "--ignore-scripts",
-    "--no-package-lock",
-    tarball,
-    "react@^18.3.1",
-    "@types/react@^18.3.0",
-    "typescript@^5.6.0",
-  ],
-  { cwd: consumerDirectory, stdio: "inherit", env: { ...process.env, npm_config_dry_run: "false" } },
-);
-
-await writeFile(
-  join(consumerDirectory, "index.tsx"),
-  [
-    'import { Icon } from "@spreadworks/icons";',
-    'import { chevronRight } from "@spreadworks/icons/icons/fontawesome/free-solid/chevron-right";',
-    "",
-    "export const nextIcon = <Icon icon={chevronRight} aria-label=\"Next\" />;",
-  ].join("\n"),
-);
+await writeFile(join(consumerDirectory, "package.json"), JSON.stringify({ name: "icons-consumer", private: true, type: "module" }));
+await writeFile(join(consumerDirectory, "icons.json"), JSON.stringify({ aliases: { icons: "@icons" } }));
 await writeFile(
   join(consumerDirectory, "tsconfig.json"),
   JSON.stringify({
@@ -53,18 +21,48 @@ await writeFile(
       strict: true,
       noEmit: true,
       jsx: "react-jsx",
-      module: "NodeNext",
-      moduleResolution: "NodeNext",
+      module: "ESNext",
+      moduleResolution: "Bundler",
       skipLibCheck: true,
+      baseUrl: ".",
+      paths: { "@icons/*": ["./src/icons/*"] },
     },
+    include: ["src"],
   }),
 );
-execFileSync(join(consumerDirectory, "node_modules/.bin/tsc"), ["-p", "tsconfig.json"], {
-  cwd: consumerDirectory,
-  stdio: "inherit",
-});
+await writeFile(join(consumerDirectory, "brand.svg"), '<svg viewBox="0 0 10 10"><rect width="10" height="10"/></svg>');
+execFileSync(
+  "npm",
+  ["install", "--ignore-scripts", "--no-package-lock", tarball, "react@^18.3.1", "@types/react@^18.3.0", "typescript@^5.6.0"],
+  { cwd: consumerDirectory, stdio: "inherit", env: { ...process.env, npm_config_dry_run: "false" } },
+);
+
+const command = join(consumerDirectory, "node_modules/.bin/spreadworks-icons");
+for (const args of [
+  ["add", "--provider", "fontawesome", "--source", "free-solid", "--icon", "chevron-right", "--target", "icons"],
+  ["add", "--provider", "fontawesome", "--source", "free-solid", "--icon", "xmark", "--target", "icons"],
+  ["add", "--provider", "svg-file", "--file", "brand.svg", "--name", "brand-logo", "--target", "icons"],
+]) {
+  execFileSync(command, args, { cwd: consumerDirectory, stdio: "inherit" });
+}
+
+const iconDirectory = join(consumerDirectory, "src/icons");
+for (const file of ["Icon.tsx", "icon-types.ts", "index.ts", "fontawesome/free-solid/chevron-right.ts", "custom/brand-logo.ts"]) {
+  await readFile(join(iconDirectory, file), "utf8");
+}
+const generatedIcon = await readFile(join(iconDirectory, "fontawesome/free-solid/chevron-right.ts"), "utf8");
+if (/from\s+["']@spreadworks\/icons/.test(generatedIcon)) {
+  throw new Error("Generated icon must not depend on the generator package.");
+}
+
+await writeFile(
+  join(consumerDirectory, "src/entry.ts"),
+  'import { chevronRight } from "@icons/fontawesome/free-solid/chevron-right"; export { chevronRight };',
+);
+execFileSync(join(consumerDirectory, "node_modules/.bin/tsc"), ["-p", "tsconfig.json"], { cwd: consumerDirectory, stdio: "inherit" });
 const bundle = await build({
-  entryPoints: [join(consumerDirectory, "bundle-entry.ts")],
+  absWorkingDir: consumerDirectory,
+  entryPoints: ["src/entry.ts"],
   bundle: true,
   format: "esm",
   minify: true,
@@ -73,16 +71,7 @@ const bundle = await build({
 });
 const bundledCode = bundle.outputFiles[0]?.text ?? "";
 if (!bundledCode.includes("chevron-right") || bundledCode.includes("xmark")) {
-  throw new Error("A one-icon consumer bundle did not retain only the requested icon module.");
+  throw new Error("A consumer bundle must retain only its imported icon.");
 }
-execFileSync(
-  process.execPath,
-  [
-    "--input-type=module",
-    "--eval",
-    'import { Icon } from "@spreadworks/icons"; import { chevronRight } from "@spreadworks/icons/icons/fontawesome/free-solid/chevron-right"; if (typeof Icon !== "function" || chevronRight.name !== "chevron-right") process.exit(1);',
-  ],
-  { cwd: consumerDirectory, stdio: "inherit" },
-);
 
-process.stdout.write("Packed package installs, type-checks, imports, and tree-shakes from a standalone consumer.\n");
+process.stdout.write("Consumer owns generated runtime and icon source without a runtime generator dependency.\n");

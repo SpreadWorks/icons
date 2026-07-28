@@ -25,12 +25,11 @@ export async function loadFontAwesomeIcon(source: string, name: string): Promise
   if (!definition?.icon) throw new Error(`Font Awesome ${source} does not contain "${name}".`);
 
   const [width, height, , , pathData] = definition.icon;
-  const paths = Array.isArray(pathData) ? pathData : [pathData];
   return {
     definition: {
       name,
       viewBox: `0 0 ${width} ${height}`,
-      nodes: paths.map((d) => ({ tag: "path", attrs: { d } })),
+      nodes: (Array.isArray(pathData) ? pathData : [pathData]).map((d) => ({ tag: "path", attrs: { d } })),
     },
     attribution: {
       provider: "fontawesome-free",
@@ -38,7 +37,7 @@ export async function loadFontAwesomeIcon(source: string, name: string): Promise
         "Contains data derived from Font Awesome Free.",
         "© Fonticons, Inc. — CC BY 4.0",
         "https://creativecommons.org/licenses/by/4.0/",
-        "Converted to TypeScript by @spreadworks/icon-generator.",
+        "Converted to TypeScript by @spreadworks/icons.",
       ],
     },
   };

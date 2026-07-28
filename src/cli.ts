@@ -1,9 +1,11 @@
+#!/usr/bin/env node
 import { resolve } from "node:path";
 
 import { findIconsConfig, resolveTargetDirectory } from "./config.js";
 import { loadFontAwesomeIcon } from "./providers/fontawesome.js";
 import { loadLucideIcon } from "./providers/lucide.js";
 import { loadSvgFileIcon } from "./providers/svg-file.js";
+import { ensureRuntimeFiles } from "./templates/runtime.js";
 import { writeIconModule } from "./transforms/write-icon-module.js";
 
 type Arguments = Record<string, string | undefined>;
@@ -24,38 +26,35 @@ function parseArguments(tokens: string[]): Arguments {
 }
 
 function required(args: Arguments, key: string): string {
-  const value = args[key];
-  if (!value) throw new Error(`--${key} is required.`);
-  return value;
+  if (!args[key]) throw new Error(`--${key} is required.`);
+  return args[key]!;
 }
 
 async function main(): Promise<void> {
   const argv = process.argv.slice(2);
   if (argv[0] === "--") argv.shift();
   const [command, ...tokens] = argv;
-  if (command !== "add") throw new Error('Usage: icon-generator add --provider <fontawesome|lucide|svg-file> --target <target> ...');
+  if (command !== "add") throw new Error('Usage: spreadworks-icons add --provider <fontawesome|lucide|svg-file> --target <target> ...');
   const args = parseArguments(tokens);
   const provider = required(args, "provider");
-  const target = required(args, "target");
   const name = args.name ?? args.icon;
   if (!name) throw new Error("--icon (or --name for svg-file) is required.");
 
-  const generated = await (provider === "fontawesome"
+  const icon = await (provider === "fontawesome"
     ? loadFontAwesomeIcon(required(args, "source"), name)
     : provider === "lucide"
       ? loadLucideIcon(name)
       : provider === "svg-file"
         ? loadSvgFileIcon(resolve(required(args, "file")), name)
         : Promise.reject(new Error(`Unsupported provider "${provider}".`)));
-  const outputDirectory = await resolveTargetDirectory({
+  const targetDirectory = await resolveTargetDirectory({
     configPath: args.config ? resolve(args.config) : await findIconsConfig(process.cwd()),
-    target,
+    target: required(args, "target"),
   });
-  const source = provider === "fontawesome" ? required(args, "source") : provider;
-  const directory = provider === "fontawesome" ? `fontawesome/${source}` : provider === "svg-file" ? "custom" : "lucide";
-  const output = resolve(outputDirectory, `${directory}/${name}.ts`);
-  await writeIconModule(generated, output);
-  process.stdout.write(`Generated ${output}\n`);
+  await ensureRuntimeFiles(targetDirectory);
+  const directory = provider === "fontawesome" ? `fontawesome/${required(args, "source")}` : provider === "svg-file" ? "custom" : "lucide";
+  const outputPath = await writeIconModule({ icon, targetDirectory, outputRelativePath: `${directory}/${name}.ts` });
+  process.stdout.write(`Generated ${outputPath}\n`);
 }
 
 main().catch((error: unknown) => {

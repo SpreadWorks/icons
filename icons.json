@@ -1,6 +1,0 @@
-{
-  "$schema": "https://company.example/schemas/icons.json",
-  "aliases": {
-    "icons": "@icons"
-  }
-}

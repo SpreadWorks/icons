@@ -1,9 +1,10 @@
 # Spreadworks Icons
 
-`@spreadworks/icons` を公開するための pnpm workspace。React 向けの tree-shakeable な SVG icon renderer と、生成済み icon module を `packages/icons` に持つ。`packages/icon-generator` は Font Awesome Free、Lucide、ローカル SVG を共通の icon 定義へ変換する private な生成ツールであり、公開 package には provider の依存や認証情報を含めない。
+`@spreadworks/icons` を公開する単一の CLI package。利用者プロジェクトの `icons.json` と TypeScript path alias を読み、React 向け SVG renderer・型・icon module を利用者の target へ生成する。生成物は利用者が所有し、アプリケーションは Font Awesome、Lucide、またはこの CLI package を runtime dependency としない。
 
 ## コミット
 
+- **MUST: ユーザーが明示的に指示するまでコミットしないこと。**
 - **MUST: コミットメッセージは英語で書くこと。**
 - sign-off 行や co-authored-by トレーラーを付けないこと。
 
