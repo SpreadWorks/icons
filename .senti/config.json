@@ -1,0 +1,54 @@
+{
+  "name": "icons",
+  "lang": "ja",
+  "type": [
+    "node-cli",
+    "document"
+  ],
+  "docs": {
+    "languages": [
+      "ja",
+      "en"
+    ],
+    "defaultLanguage": "en",
+    "style": {
+      "purpose": "user-guide",
+      "tone": "polite"
+    }
+  },
+  "flow": {
+    "merge": "squash"
+  },
+  "agent": {
+    "default": "codex",
+    "useProfile": "codex-only",
+    "workDir": ".tmp"
+  },
+  "plugin": {
+    "sources": [
+      {
+        "id": "official-presets",
+        "type": "git",
+        "remote": "git@github.com:SpreadWorks/senti-presets.git"
+      },
+      {
+        "id": "senti-workflow-plugin",
+        "type": "git",
+        "url": "git@github.com:SpreadWorks/senti-workflow-plugin.git"
+      }
+    ],
+    "packages": [
+      {
+        "id": "official-presets",
+        "source": "official-presets",
+        "commit": "31bdd70fecfcde33c32bd75909218b744561c24e"
+      },
+      {
+        "id": "workflow",
+        "source": "senti-workflow-plugin",
+        "commit": "45c6bacb25a4e266d09de8b5ab18c3379b018472"
+      }
+    ],
+    "config": {}
+  }
+}

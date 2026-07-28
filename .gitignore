@@ -1,0 +1,16 @@
+.tmp/
+node_modules/
+dist/
+
+.senti/*
+!.senti/config.json
+!.senti/templates/
+!.senti/output/
+!.senti/presets/
+.senti/output/acceptance-report-*.json
+
+.agents/*
+!.agents/skills*
+.claude/*
+!.claude/skills*
+.codex
